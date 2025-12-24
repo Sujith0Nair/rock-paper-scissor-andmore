@@ -1,0 +1,17 @@
+{
+    "name": "RPS.GameScene",
+    "rootNamespace": "",
+    "references": [
+        "GUID:68b3a757a4adb1e46b185af1651e8f5e",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
