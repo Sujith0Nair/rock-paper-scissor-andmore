@@ -3,7 +3,7 @@ using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Bootstrap.Interface;
+using Bootstrap.ScriptableObjects;
 
 namespace HomeScene
 {
@@ -11,24 +11,22 @@ namespace HomeScene
     {
         [SerializeField] private Button playButton;
         [SerializeField] private TextMeshProUGUI highScore;
+        [SerializeField] private GameEventChannel gameEventChannel;
         
-        private ISceneHandler _sceneHandler;
-        
-        public void Initialize(ISceneHandler sceneHandler)
-        {
-            _sceneHandler = sceneHandler;
-            InitializeUIComponents(sceneHandler);
-        }
-
-        private void InitializeUIComponents(ISceneHandler sceneHandler)
+        private void Start()
         {
             if (playButton == null)
             {
                 throw new NullReferenceException("playButton is unassigned!");
             }
+            if (gameEventChannel == null)
+            {
+                throw new NullReferenceException("GameEventChannel is unassigned!");
+            }
+
             playButton.onClick.RemoveAllListeners();
-            playButton.onClick.AddListener(sceneHandler.SwitchScene);
-            highScore.text = ScoreManager.GetScore().ToString();
+            playButton.onClick.AddListener(gameEventChannel.RequestSceneChange);
+            highScore.text = highScore.text.Replace("{0}", ScoreManager.GetScore().ToString());
         }
     }
 }

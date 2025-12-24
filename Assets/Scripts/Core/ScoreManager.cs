@@ -4,17 +4,17 @@ namespace Core
 {
     public static class ScoreManager
     {
-        private const string HIGH_SCORE_KEY = "HighScore";
+        private const string HighScoreKey = "HighScore";
 
         public static void SetScore(int score)
         {
             var currentHighScore = GetScore();
             if (currentHighScore < score)
             {
-                PlayerPrefs.SetInt(HIGH_SCORE_KEY, score);
+                PlayerPrefs.SetInt(HighScoreKey, score);
             }
         }
         
-        public static int GetScore() => PlayerPrefs.GetInt(HIGH_SCORE_KEY, 0);
+        public static int GetScore() => PlayerPrefs.GetInt(HighScoreKey, 0);
     }
 }

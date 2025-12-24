@@ -1,23 +1,51 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
-using Bootstrap.Interface;
 using UnityEngine.SceneManagement;
+using Bootstrap.ScriptableObjects;
 
 namespace Bootstrap
 {
-    public class Boostrap : MonoBehaviour, ISceneHandler
+    public class Boostrap : MonoBehaviour 
     {
+        [SerializeField] private GameEventChannel gameEventChannel;
+
         private Scene? _currentScene;
         private int _currentSceneIndex = -1;
 
-        private void Start() => SwitchScene();
+        private void OnEnable()
+        {
+            if (gameEventChannel == null)
+            {
+                throw new NullReferenceException("GameEventChannel is unassigned in Bootstrap!");
+            }
+            gameEventChannel.OnSceneChangeRequested += SwitchScene;
+        }
+
+        private void OnDisable()
+        {
+            if (gameEventChannel == null) return;
+            gameEventChannel.OnSceneChangeRequested -= SwitchScene;
+        }
+
+        private void Start()
+        {
+            SwitchScene();
+        }
 
         public void SwitchScene()
         {
-            _currentSceneIndex = ++_currentSceneIndex % SceneManager.sceneCount - 1;
-            var scene = SceneManager.GetSceneAt(_currentSceneIndex + 1);
-            StartCoroutine(LoadScene(scene.name));
+            var totalScenesToCycle = SceneManager.sceneCountInBuildSettings - 1;
+            if (totalScenesToCycle <= 0)
+            {
+                Debug.LogError($"No playable scenes configured in Build Settings (excluding {gameObject.scene.name} scene).");
+                return;
+            }
+
+            _currentSceneIndex = (_currentSceneIndex + 1) % totalScenesToCycle;
+            var sceneBuildIndexToLoad = _currentSceneIndex + 1;
+            var sceneName = SceneManager.GetSceneByBuildIndex(sceneBuildIndexToLoad).name;
+            StartCoroutine(LoadScene(sceneName));
         }
 
         private IEnumerator LoadScene(string sceneName)
@@ -26,17 +54,18 @@ namespace Bootstrap
             {
                 yield return SceneManager.UnloadSceneAsync(_currentScene.Value);
             }
-            yield return SceneManager.LoadSceneAsync(sceneName,  LoadSceneMode.Additive);
+            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             SetSceneActive(sceneName);
         }
 
-        private static void SetSceneActive(string sceneName)
+        private void SetSceneActive(string sceneName)
         {
             var scene = SceneManager.GetSceneByName(sceneName);
             if (!scene.IsValid())
             {
                 throw new Exception("Scene not found: " + sceneName);
             }
+            _currentScene = scene;
             SceneManager.SetActiveScene(scene);
         }
     }

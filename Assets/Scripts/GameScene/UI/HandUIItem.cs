@@ -13,9 +13,9 @@ namespace GameScene.UI
         [SerializeField] private Button selectionButton;
 
         private HandUIData _data;
-        private Action<string, Sprite> _onCurrentItemSelected;
+        private Action<HandUIData> _onCurrentItemSelected;
         
-        internal void Initialize(HandUIData data, Action<string, Sprite> onCurrentItemSelected)
+        internal void Initialize(HandUIData data, Action<HandUIData> onCurrentItemSelected)
         {
             _data = data;
             _onCurrentItemSelected = onCurrentItemSelected;
@@ -29,7 +29,7 @@ namespace GameScene.UI
 
         private void OnHandUIItemSelected()
         {
-            _onCurrentItemSelected?.Invoke(_data.Name, imageSlot.sprite);
+            _onCurrentItemSelected?.Invoke(_data);
         }
     }
 }

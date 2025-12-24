@@ -1,19 +1,22 @@
 ﻿using TMPro;
 using System;
 using Core.DTOs;
+using Core.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
 namespace GameScene.UI
 {
-    internal class HandsUIHandler : MonoBehaviour
+    public class HandsUIHandler : MonoBehaviour
     {
         [SerializeField] private GameObject referenceHandUI;
         [SerializeField] private Transform handsParent;
         [SerializeField] private TextMeshProUGUI currentMessage;
         [SerializeField] private Image selectionImage;
-
+        [SerializeField] private Sprite defaultSprite;
+        
+        public HandType? CurrentHand { get; private set; }
 
         private void Start()
         {
@@ -26,31 +29,51 @@ namespace GameScene.UI
             {
                 throw new NullReferenceException("CurrentMessage is null");
             }
-            SetupMainStageContents("Waiting for player's turn!");
+            ResetSelection();
         }
 
-        internal void Initialize(IReadOnlyList<HandUIData> handsData)
+        public void Initialize(IReadOnlyList<HandUIData> handsData)
         {
+            Cleanup();
+
             foreach (var handData in handsData)
             {
                 var instance = Instantiate(referenceHandUI, handsParent);
                 instance.SetActive(true);
                 var handItem = instance.GetComponentInChildren<HandUIItem>();
-                handItem.Initialize(handData, SetupMainStageContents);
+                handItem.Initialize(handData, data =>
+                {
+                    SetupMainStageContents(data.Name, data.Sprite, data.Type);
+                });
             }
         }
 
-        internal void SetupMainStageContents(string handName, Sprite handSprite = null)
+        public void ResetSelection()
         {
-            currentMessage.text = $"Player selected {handName}";
-            selectionImage.sprite = handSprite;
+            CurrentHand = null;
+            if (currentMessage != null) currentMessage.text = "Waiting for player's turn!";
+            if (selectionImage == null) return;
+            selectionImage.sprite = defaultSprite; 
+            selectionImage.enabled = defaultSprite != null;
         }
 
-        internal void Cleanup()
+        private void SetupMainStageContents(string handName, Sprite handSprite, HandType? handType)
         {
-            for (var i = handsParent.childCount - 1; i > 0; i--)
+            currentMessage.text = $"Player selected {handName}";
+            if (selectionImage != null)
             {
-                Destroy(handsParent.GetChild(i).gameObject);
+                selectionImage.sprite = handSprite;
+                selectionImage.enabled = handSprite != null;
+            }
+            CurrentHand = handType;
+        }
+
+        private void Cleanup()
+        {
+            foreach (Transform child in handsParent)
+            {
+                if (child.gameObject == referenceHandUI) continue;
+                Destroy(child.gameObject);
             }
         }
 

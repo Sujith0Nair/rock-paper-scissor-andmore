@@ -227,9 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcf9f2ec3a864f3e97087f513c8e35bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RPS.Bootstrap::Bootstrap.Boostrap
-  allSceneNames:
-  - HomeScreen
-  - GameScreen
+  gameEventChannel: {fileID: 11400000, guid: ce03ca6f61eef804e8916db3cbdda38f, type: 2}
 --- !u!4 &987884067
 Transform:
   m_ObjectHideFlags: 0
