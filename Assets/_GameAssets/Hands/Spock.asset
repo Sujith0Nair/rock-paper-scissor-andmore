@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08c074f392656604a912b75292ee4a2b, type: 3}
   m_Name: Spock
   m_EditorClassIdentifier: RPS.Core::Core.ScriptableObjects.Hands.Spock
-  handSprite: {fileID: 0}
+  handSprite: {fileID: 21300000, guid: 783bed3e212d946f6a39a7fe6af7e9ac, type: 3}
   myType: 32
   canDefeat: 10

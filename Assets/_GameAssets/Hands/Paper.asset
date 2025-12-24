@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3309f90ff9be92047ac7297da47b1aff, type: 3}
   m_Name: Paper
   m_EditorClassIdentifier: RPS.Core::Core.ScriptableObjects.Hands.Paper
-  handSprite: {fileID: 0}
+  handSprite: {fileID: 21300000, guid: d03c63923c90f4e74ad9a6d2788f1b87, type: 3}
   myType: 4
   canDefeat: 34

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c77b2f55ecbcf44b10a0935aa71ca0, type: 3}
   m_Name: Lizard
   m_EditorClassIdentifier: RPS.Core::Core.ScriptableObjects.Hands.Lizard
-  handSprite: {fileID: 0}
+  handSprite: {fileID: 21300000, guid: 8c8904f8482a44c17a5b33489ebeb472, type: 3}
   myType: 16
   canDefeat: 36

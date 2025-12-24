@@ -1,5 +1,5 @@
 {
-    "name": "RPS.GameScene",
+    "name": "RPS.HomeScene",
     "rootNamespace": "",
     "references": [
         "GUID:68b3a757a4adb1e46b185af1651e8f5e",
