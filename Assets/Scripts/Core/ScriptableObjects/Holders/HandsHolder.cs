@@ -13,7 +13,7 @@ namespace Core.ScriptableObjects.Holders
         [SerializeField]
         private List<Hand> allHands;
 
-        public List<HandUIData> GetAllHandsData()
+        public IReadOnlyList<HandUIData> GetAllHandsData()
         {
             return allHands == null ? 
                 new List<HandUIData>() : 
