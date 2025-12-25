@@ -13,10 +13,15 @@ namespace GameScene.UI
         [SerializeField] private GameObject referenceHandUI;
         [SerializeField] private Transform handsParent;
         [SerializeField] private TextMeshProUGUI currentMessage;
-        [SerializeField] private Image selectionImage;
+        [SerializeField] private Image selectedBase;
+        [SerializeField] private Image selectedHandIcon;
         [SerializeField] private Sprite defaultSprite;
+        [SerializeField] private Sprite unselectedBaseSprite;
+        [SerializeField] private Sprite selectedBaseSprite;
         
         internal HandType? CurrentHand { get; private set; }
+
+        private List<HandUIItem> _handItems;
 
         private void Start()
         {
@@ -29,6 +34,8 @@ namespace GameScene.UI
             {
                 throw new NullReferenceException("CurrentMessage is null");
             }
+
+            _handItems = new List<HandUIItem>();
             ResetSelection();
         }
 
@@ -45,6 +52,7 @@ namespace GameScene.UI
                 {
                     SetupMainStageContents(data.Name, data.Sprite, data.Type);
                 });
+                _handItems.Add(handItem);
             }
         }
 
@@ -52,20 +60,29 @@ namespace GameScene.UI
         {
             CurrentHand = null;
             if (currentMessage != null) currentMessage.text = string.Empty;
-            if (selectionImage == null) return;
-            selectionImage.sprite = defaultSprite; 
-            selectionImage.enabled = defaultSprite != null;
+            if (selectedHandIcon != null)
+            {
+                selectedHandIcon.sprite = defaultSprite;
+                selectedHandIcon.color = new Color(1,1,1, 0);
+            }
+            if (selectedBase != null) selectedBase.sprite = unselectedBaseSprite;
         }
 
         private void SetupMainStageContents(string handName, Sprite handSprite, HandType? handType)
         {
             currentMessage.text = $"Player selected {handName}";
-            if (selectionImage != null)
+            if (selectedBase != null) selectedBase.sprite = selectedBaseSprite;
+            if (selectedHandIcon != null)
             {
-                selectionImage.sprite = handSprite;
-                selectionImage.enabled = handSprite != null;
+                selectedHandIcon.sprite = handSprite;
+                selectedHandIcon.color = new Color(1,1,1, 1);
             }
             CurrentHand = handType;
+            for (var i = 0; i < _handItems.Count && handType != null; i++)
+            {
+                var handUIItem = _handItems[i];
+                handUIItem.OnAnyHandUIItemSelected(handType.Value);
+            }
         }
 
         private void Cleanup()
@@ -75,6 +92,7 @@ namespace GameScene.UI
                 if (child.gameObject == referenceHandUI) continue;
                 Destroy(child.gameObject);
             }
+            _handItems?.Clear();
         }
 
         private void OnDestroy() => Cleanup();

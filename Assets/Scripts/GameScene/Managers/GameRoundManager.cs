@@ -31,6 +31,11 @@ namespace GameScene.Managers
 
         private int _currentSessionScore;
 
+        internal void SwitchScene()
+        {
+            gameEventChannel.RequestSceneChange();
+        }
+
         private void Start() => StartNewRound();
 
         private void OnDestroy() => Timer.StopCountdown();

@@ -1,4 +1,3 @@
-using Core;
 using TMPro;
 using Core.Enums;
 using UnityEngine;
@@ -6,6 +5,7 @@ using UnityEngine.UI;
 using GameScene.Managers;
 using System.Collections;
 using Core.ScriptableObjects.Holders;
+using Core.Utilities;
 
 namespace GameScene.UI
 {
@@ -18,9 +18,14 @@ namespace GameScene.UI
         
         [Header("UI Elements")]
         [SerializeField] private TextMeshProUGUI scoreText;
+
+        [SerializeField] private Image computerImageBase;
         [SerializeField] private Image computerImage;
         [SerializeField] private TextMeshProUGUI messageText;
         [SerializeField] private Sprite defaultSprite;
+        [SerializeField] private Sprite unselectedBaseSprite;
+        [SerializeField] private Sprite selectedBaseSprite;
+        [SerializeField] private Button backButton;
         
         private HandType? _selectedHandType;
         private WaitForSeconds _waitForSeconds;
@@ -33,7 +38,10 @@ namespace GameScene.UI
             }
             ShowMessage("Waiting for player's turn!");
             computerImage.sprite = defaultSprite;
+            computerImage.color = new Color(1, 1, 1, 0);
+            computerImageBase.sprite = unselectedBaseSprite;
             _selectedHandType = null;
+            backButton.onClick.RemoveAllAndAddNewListener(gameRoundManager.SwitchScene);
         }
 
         private void OnEnable()
@@ -59,7 +67,7 @@ namespace GameScene.UI
         {
             if (scoreText != null)
             {
-                scoreText.text = newScore.ToString();
+                scoreText.text = $"Score : {newScore}";
             }
         }
 
@@ -76,6 +84,8 @@ namespace GameScene.UI
             var data = handsHolder.GetRandomHandUIData();
             ShowMessage($"Computer selected: {data.Name}");
             computerImage.sprite = data.Sprite;
+            computerImage.color = new Color(1, 1, 1, 1);
+            computerImageBase.sprite = selectedBaseSprite;
             StartCoroutine(SetHandTypeAfterSecond(data.Type));
         }
 

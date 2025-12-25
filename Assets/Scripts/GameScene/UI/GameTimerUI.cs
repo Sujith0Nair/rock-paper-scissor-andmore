@@ -10,10 +10,8 @@ namespace GameScene.UI
     {
         [Header("References")]
         [SerializeField] private GameRoundManager gameRoundManager;
-        [SerializeField] private Image fillImage;
         [SerializeField] private Slider slider;
         [SerializeField] private TextMeshProUGUI timerText;
-        [SerializeField] private Gradient gradient;
 
         private Coroutine _sliderCoroutine;
         
@@ -36,7 +34,6 @@ namespace GameScene.UI
         private void UpdateTimerUI(int secondsRemaining, float progress)
         {
             if (timerText != null) timerText.text = secondsRemaining.ToString();
-            if (fillImage != null) fillImage.color = gradient.Evaluate(progress);
             if (slider == null) return;
             StopCoroutine();
             _sliderCoroutine = StartCoroutine(LerpSlider(progress));

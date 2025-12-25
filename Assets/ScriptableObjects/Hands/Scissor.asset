@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec724c85fbccd6a47998615463e92c42, type: 3}
   m_Name: Scissor
   m_EditorClassIdentifier: RPS.Core::Core.ScriptableObjects.Hands.Scissor
-  handSprite: {fileID: 21300000, guid: 882222372d58042019b1a2820d3bec4b, type: 3}
+  handSprite: {fileID: 21300000, guid: 78b303d64d0797b4495668ff32d2a411, type: 3}
   myType: 8
   canDefeat: 20

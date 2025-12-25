@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using System;
 using Core.DTOs;
+using Core.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,9 @@ namespace GameScene.UI
         [SerializeField] private Image imageSlot;
         [SerializeField] private TextMeshProUGUI text;
         [SerializeField] private Button selectionButton;
+        [SerializeField] private Sprite unselectedSprite;
+        [SerializeField] private Sprite selectedSprite;
+        [SerializeField] private Image selectedBaseImage;
 
         private HandUIData _data;
         private Action<HandUIData> _onCurrentItemSelected;
@@ -30,6 +34,13 @@ namespace GameScene.UI
         private void OnHandUIItemSelected()
         {
             _onCurrentItemSelected?.Invoke(_data);
+            selectedBaseImage.sprite = selectedSprite;
+        }
+
+        internal void OnAnyHandUIItemSelected(HandType type)
+        {
+            if (type == _data.Type) return;
+            selectedBaseImage.sprite = unselectedSprite;
         }
     }
 }

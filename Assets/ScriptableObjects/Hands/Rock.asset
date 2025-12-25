@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7499f64e4f749499ca6d3dbb5a2bb30, type: 3}
   m_Name: Rock
   m_EditorClassIdentifier: RPS.Core::Core.ScriptableObjects.Rock
-  handSprite: {fileID: 21300000, guid: 5d8451c38419f49f28ed1c7901eafa57, type: 3}
+  handSprite: {fileID: 21300000, guid: e32dae48fd3b3aa459e817369a616639, type: 3}
   myType: 2
   canDefeat: 24
