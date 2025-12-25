@@ -7,10 +7,16 @@ namespace Bootstrap.ScriptableObjects
     public class GameEventChannel : ScriptableObject
     {
         internal event Action OnSceneChangeRequested;
+        internal event Action OnMusicToggleRequested;
 
         public void RequestSceneChange()
         {
             OnSceneChangeRequested?.Invoke();
+        }
+
+        public void ToggleMusic()
+        {
+            
         }
     }
 }
