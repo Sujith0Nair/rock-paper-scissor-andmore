@@ -4,6 +4,7 @@ using Core.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 using GameScene.Managers;
+using System.Collections;
 using Core.ScriptableObjects.Holders;
 
 namespace GameScene.UI
@@ -22,6 +23,7 @@ namespace GameScene.UI
         [SerializeField] private Sprite defaultSprite;
         
         private HandType? _selectedHandType;
+        private WaitForSeconds _waitForSeconds;
 
         private void InitializeHUD()
         {
@@ -29,7 +31,6 @@ namespace GameScene.UI
             {
                 handsUIHandler.Initialize(handsHolder.GetAllHandsData());
             }
-            UpdateScoreUI(ScoreManager.GetScore());
             ShowMessage("Waiting for player's turn!");
             computerImage.sprite = defaultSprite;
             _selectedHandType = null;
@@ -37,6 +38,7 @@ namespace GameScene.UI
 
         private void OnEnable()
         {
+            _waitForSeconds = new WaitForSeconds(1f);
             if (gameRoundManager == null) return;
             gameRoundManager.OnScoreUpdated += UpdateScoreUI;
             gameRoundManager.OnRoundStarted += InitializeHUD;
@@ -74,7 +76,13 @@ namespace GameScene.UI
             var data = handsHolder.GetRandomHandUIData();
             ShowMessage($"Computer selected: {data.Name}");
             computerImage.sprite = data.Sprite;
-            _selectedHandType = data.Type;
+            StartCoroutine(SetHandTypeAfterSecond(data.Type));
+        }
+
+        private IEnumerator SetHandTypeAfterSecond(HandType handType)
+        {
+            yield return _waitForSeconds;
+            _selectedHandType = handType;
         }
 
         private HandType? GetComputerHandType() => _selectedHandType;

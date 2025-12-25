@@ -29,6 +29,8 @@ namespace GameScene.Managers
         public event Action OnRoundEnded;
         public event Func<HandType?> GetComputerHandType;
 
+        private int _currentSessionScore;
+
         private void Start() => StartNewRound();
 
         private void OnDestroy() => Timer.StopCountdown();
@@ -48,7 +50,6 @@ namespace GameScene.Managers
 
         private void OnRoundTimerEnded()
         {
-            OnRoundEnded?.Invoke();
             StartCoroutine(ProcessRoundResult());
         }
 
@@ -60,6 +61,7 @@ namespace GameScene.Managers
                 yield break;
             }
 
+            OnRoundEnded?.Invoke();
             HandType? computerHandType = null;
             while (computerHandType == null)
             {
@@ -72,9 +74,9 @@ namespace GameScene.Managers
 
             if (HasPlayerWon(playerHand, computerHand))
             {
-                var newScore = ScoreManager.GetScore() + 1;
-                ScoreManager.SetScore(newScore);
-                OnScoreUpdated?.Invoke(newScore);
+                _currentSessionScore++;
+                ScoreManager.SetScore(_currentSessionScore);
+                OnScoreUpdated?.Invoke(_currentSessionScore);
 
                 popupEventChannel.RaisePopup(PopupType.PlayerWon, StartNewRound);
             }
