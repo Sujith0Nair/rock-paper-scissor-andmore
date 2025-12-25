@@ -1,9 +1,10 @@
 using Core;
 using System;
+using Core.Enums;
 using UnityEngine;
 using GameScene.UI;
+using System.Collections;
 using GameScene.Utilities;
-using Core.Enums;
 using Core.ScriptableObjects;
 using Bootstrap.ScriptableObjects;
 using Core.ScriptableObjects.Hands;
@@ -24,19 +25,17 @@ namespace GameScene.Managers
 
         public event Action<int, float> OnTimerTick;
         public event Action<int> OnScoreUpdated;
-        public event Action<string> OnGameMessage;
+        public event Action OnRoundStarted;
+        public event Action OnRoundEnded;
+        public event Func<HandType?> GetComputerHandType;
 
-        private void Start() => ShowTutorial();
+        private void Start() => StartNewRound();
 
         private void OnDestroy() => Timer.StopCountdown();
 
-        private void ShowTutorial()
-        {
-            popupEventChannel.RaisePopup(PopupType.Tutorial, StartNewRound);
-        }
-
         private void StartNewRound()
         {
+            OnRoundStarted?.Invoke();
             handsUIHandler.ResetSelection();
             Timer.StartCountdown(roundDurationSeconds, OnRoundTimerEnded, OnTimerTickCallback);
         }
@@ -47,23 +46,32 @@ namespace GameScene.Managers
             OnTimerTick?.Invoke(secondsRemaining, progress);
         }
 
-        private void OnRoundTimerEnded() => ProcessRoundResult();
+        private void OnRoundTimerEnded()
+        {
+            OnRoundEnded?.Invoke();
+            StartCoroutine(ProcessRoundResult());
+        }
 
-        private void ProcessRoundResult()
+        private IEnumerator ProcessRoundResult()
         {
             if (handsUIHandler.CurrentHand == null)
             {
-                // Treat time out as a loss or handle separately if needed
-                popupEventChannel.RaisePopup(PopupType.ComputerWon, () => TriggerSceneChange());
-                return;
+                popupEventChannel.RaisePopup(PopupType.ComputerWon, TriggerSceneChange);
+                yield break;
+            }
+
+            HandType? computerHandType = null;
+            while (computerHandType == null)
+            {
+                computerHandType = GetComputerHandType?.Invoke();
+                yield return null;
             }
 
             var playerHand = handsHolder.GetHandForType(handsUIHandler.CurrentHand.Value);
-            var computerHand = handsHolder.GetRandomHand();
+            var computerHand = handsHolder.GetHandForType(computerHandType.Value);
 
-            if (HasPlayerWon(playerHand, computerHand, out var message))
+            if (HasPlayerWon(playerHand, computerHand))
             {
-                // Update score immediately or after popup? Usually implies the win happened, so update score now.
                 var newScore = ScoreManager.GetScore() + 1;
                 ScoreManager.SetScore(newScore);
                 OnScoreUpdated?.Invoke(newScore);
@@ -74,12 +82,11 @@ namespace GameScene.Managers
             {
                 if (playerHand == computerHand)
                 {
-                    OnGameMessage?.Invoke("Draw! Try again.");
-                    Invoke(nameof(StartNewRound), 2f);
+                    popupEventChannel.RaisePopup(PopupType.Draw, StartNewRound);
                 }
                 else
                 {
-                    popupEventChannel.RaisePopup(PopupType.ComputerWon, () => TriggerSceneChange());
+                    popupEventChannel.RaisePopup(PopupType.ComputerWon, TriggerSceneChange);
                 }
             }
         }
@@ -89,22 +96,14 @@ namespace GameScene.Managers
             gameEventChannel.RequestSceneChange();
         }
 
-        private static bool HasPlayerWon(Hand player, Hand computer, out string message)
+        private static bool HasPlayerWon(Hand player, Hand computer)
         {
             if (player == computer)
             {
-                message = "Draw!";
                 return false;
             }
 
-            if (player > computer)
-            {
-                message = "Player won!";
-                return true;
-            }
-
-            message = "Player lost!";
-            return false;
+            return player > computer;
         }
     }
 }

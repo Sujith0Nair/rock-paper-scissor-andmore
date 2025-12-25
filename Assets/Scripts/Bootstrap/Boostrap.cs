@@ -33,7 +33,7 @@ namespace Bootstrap
             SwitchScene();
         }
 
-        public void SwitchScene()
+        private void SwitchScene()
         {
             var totalScenesToCycle = SceneManager.sceneCountInBuildSettings - 1;
             if (totalScenesToCycle <= 0)
@@ -44,26 +44,26 @@ namespace Bootstrap
 
             _currentSceneIndex = (_currentSceneIndex + 1) % totalScenesToCycle;
             var sceneBuildIndexToLoad = _currentSceneIndex + 1;
-            var sceneName = SceneManager.GetSceneByBuildIndex(sceneBuildIndexToLoad).name;
-            StartCoroutine(LoadScene(sceneName));
+            
+            StartCoroutine(LoadScene(sceneBuildIndexToLoad));
         }
 
-        private IEnumerator LoadScene(string sceneName)
+        private IEnumerator LoadScene(int sceneBuildIndexToLoad)
         {
             if (_currentScene != null)
             {
                 yield return SceneManager.UnloadSceneAsync(_currentScene.Value);
             }
-            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            SetSceneActive(sceneName);
+            yield return SceneManager.LoadSceneAsync(sceneBuildIndexToLoad, LoadSceneMode.Additive);
+            SetSceneActive(sceneBuildIndexToLoad);
         }
 
-        private void SetSceneActive(string sceneName)
+        private void SetSceneActive(int sceneBuildIndexToLoad)
         {
-            var scene = SceneManager.GetSceneByName(sceneName);
+            var scene = SceneManager.GetSceneByBuildIndex(sceneBuildIndexToLoad);
             if (!scene.IsValid())
             {
-                throw new Exception("Scene not found: " + sceneName);
+                throw new Exception("Scene not found. Index: " + sceneBuildIndexToLoad);
             }
             _currentScene = scene;
             SceneManager.SetActiveScene(scene);

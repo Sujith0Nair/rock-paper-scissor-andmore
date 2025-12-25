@@ -4,6 +4,7 @@ namespace Core.Enums
     {
         Tutorial,
         PlayerWon,
-        ComputerWon
+        ComputerWon,
+        Draw
     }
 }

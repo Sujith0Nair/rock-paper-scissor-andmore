@@ -278,7 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: RPS.HomeScene::HomeScene.Popup.TutorialPopup
   closeButton: {fileID: 7485489824346319935}
   timerFillImage: {fileID: 22968599815147817}
-  autoCloseDuration: 10
+  autoCloseDuration: 3
 --- !u!224 &7311098080855879204 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4271147930175184930, guid: c80ce48d9d6568d43b71a7845b08b5fd, type: 3}

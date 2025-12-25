@@ -25,9 +25,10 @@ namespace Core.ScriptableObjects.Holders
             return allHands?.Find(hand => hand.MyType == type);
         }
 
-        public Hand GetRandomHand()
+        public HandUIData GetRandomHandUIData()
         {
-            return allHands?[Random.Range(0, allHands.Count)];
+            var randomHand = allHands?[Random.Range(0, allHands.Count)];
+            return randomHand != null ? new HandUIData(randomHand.Name, randomHand.HandSprite, randomHand.MyType) : default;
         }
 
         private void OnValidate()

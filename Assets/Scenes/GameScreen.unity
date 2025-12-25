@@ -751,11 +751,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1563081cb2d486ca24a1a30b6e4bf26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RPS.GameScene::GameScene.UI.HandsUIHandler
-  referenceHandUI: {fileID: 0}
-  handsParent: {fileID: 0}
-  currentMessage: {fileID: 0}
-  selectionImage: {fileID: 0}
-  defaultSprite: {fileID: 0}
+  referenceHandUI: {fileID: 406694943}
+  handsParent: {fileID: 179852403}
+  currentMessage: {fileID: 396309906}
+  selectionImage: {fileID: 816750961}
+  defaultSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &396309904
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,7 +2213,9 @@ MonoBehaviour:
   handsUIHandler: {fileID: 332666146}
   handsHolder: {fileID: 11400000, guid: 6d7d12681128e6f40b3e83b814878222, type: 2}
   scoreText: {fileID: 79177116}
-  messageText: {fileID: 0}
+  computerImage: {fileID: 1869911180}
+  messageText: {fileID: 1560625345}
+  defaultSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!114 &1196744394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2229,7 +2231,7 @@ MonoBehaviour:
   roundDurationSeconds: 5
   handsHolder: {fileID: 11400000, guid: 6d7d12681128e6f40b3e83b814878222, type: 2}
   gameEventChannel: {fileID: 11400000, guid: ce03ca6f61eef804e8916db3cbdda38f, type: 2}
-  popupEventChannel: {fileID: 0}
+  popupEventChannel: {fileID: 11400000, guid: 030cf861db8b3a14fbcfd708cb356703, type: 2}
   handsUIHandler: {fileID: 332666146}
 --- !u!4 &1196744395
 Transform:

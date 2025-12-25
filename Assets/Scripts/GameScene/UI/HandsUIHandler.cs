@@ -51,7 +51,7 @@ namespace GameScene.UI
         public void ResetSelection()
         {
             CurrentHand = null;
-            if (currentMessage != null) currentMessage.text = "Waiting for player's turn!";
+            if (currentMessage != null) currentMessage.text = string.Empty;
             if (selectionImage == null) return;
             selectionImage.sprite = defaultSprite; 
             selectionImage.enabled = defaultSprite != null;
