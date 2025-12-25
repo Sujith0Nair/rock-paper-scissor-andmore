@@ -10,9 +10,10 @@ namespace Core.UI.Popup
         [Header("Base Settings")]
         [SerializeField] protected Button closeButton;
         [SerializeField] protected Image timerFillImage;
+        [SerializeField] protected bool canAutoClose = true;
         [SerializeField] protected float autoCloseDuration = 5f;
 
-        protected Action OnCloseCallback;
+        private Action _onCloseCallback;
         private Coroutine _timerCoroutine;
 
         private void Awake()
@@ -21,14 +22,18 @@ namespace Core.UI.Popup
                 closeButton.onClick.AddListener(ClosePopup);
         }
 
-        public virtual void Initialize(Action onClose)
+        public void Initialize(Action onClose)
         {
-            OnCloseCallback = onClose;
+            _onCloseCallback = onClose;
             StartTimer();
         }
 
         private void StartTimer()
         {
+            if (!canAutoClose)
+            {
+                return;
+            }
             if (_timerCoroutine != null) StopCoroutine(_timerCoroutine);
             _timerCoroutine = StartCoroutine(TimerRoutine());
         }
@@ -46,10 +51,10 @@ namespace Core.UI.Popup
             ClosePopup();
         }
 
-        protected virtual void ClosePopup()
+        private void ClosePopup()
         {
             if (_timerCoroutine != null) StopCoroutine(_timerCoroutine);
-            OnCloseCallback?.Invoke();
+            _onCloseCallback?.Invoke();
             Destroy(gameObject);
         }
     }

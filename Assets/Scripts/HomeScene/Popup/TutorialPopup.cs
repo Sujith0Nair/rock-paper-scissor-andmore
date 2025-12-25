@@ -2,8 +2,5 @@
 
 namespace HomeScene.Popup
 {
-    internal class TutorialPopup : BasePopupUI
-    {
-        
-    }
+    internal class TutorialPopup : BasePopupUI { }
 }

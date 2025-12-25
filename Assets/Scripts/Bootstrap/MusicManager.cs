@@ -1,14 +1,18 @@
 ﻿using System;
 using UnityEngine;
-using Bootstrap.ScriptableObjects;
+using Core.Utilities;
+using UnityEngine.UI;
 
 namespace Bootstrap
 {
     public class MusicManager : MonoBehaviour
     {
-        [SerializeField] private GameEventChannel gameEventChannel;
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip musicClip;
+        [SerializeField] private Sprite muteSprite;
+        [SerializeField] private Sprite unmuteSprite;
+        [SerializeField] private Image iconImage;
+        [SerializeField] private Button toggleButton;
 
         private void Start()
         {
@@ -23,26 +27,20 @@ namespace Bootstrap
             }
             
             audioSource.clip = musicClip;
-        }
-
-        private void OnEnable()
-        {
-            gameEventChannel.OnMusicToggleRequested += OnMusicToggleRequested;
-        }
-
-        private void OnDisable()
-        {
-            gameEventChannel.OnMusicToggleRequested -= OnMusicToggleRequested;
+            audioSource.PlayDelayed(1f);
+            toggleButton.onClick.RemoveAllAndAddNewListener(OnMusicToggleRequested);
         }
 
         private void OnMusicToggleRequested()
         {
             if (audioSource.isPlaying)
             {
-                audioSource.Stop();
+                iconImage.sprite = unmuteSprite;
+                audioSource.Pause();
             }
             else
             {
+                iconImage.sprite = muteSprite;
                 audioSource.Play();
             }
         }

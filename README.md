@@ -17,6 +17,11 @@ The rules are an extension of the classic game. Each element defeats two others:
 *   **Spock** vaporizes **Rock**
 *   **Rock** crushes **Scissors**
 
+## Credits
+
+*   **Art:** All the artwork for this project was created by **Nikunj Rallabhandi**. You can find more of his work at his portfolio: [nikunjrallabhandi.framer.website](https://nikunjrallabhandi.framer.website/).
+*   **Music:** Song: NEYVO - My Heart Is Broken [NCS Release]. Music provided by NoCopyrightSounds. Free Download/Stream: [http://ncs.io/MHIB](http://ncs.io/MHIB).
+
 ## Requirements
 
 *   **Unity Version:** 6000.3.2f1 (Unity 6)

@@ -1,7 +1,9 @@
 {
     "name": "RPS.Bootstrap",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:68b3a757a4adb1e46b185af1651e8f5e"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
