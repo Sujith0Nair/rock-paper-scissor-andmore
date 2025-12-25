@@ -12,7 +12,7 @@ using Core.ScriptableObjects.Holders;
 
 namespace GameScene.Managers
 {
-    public class GameRoundManager : MonoBehaviour
+    internal class GameRoundManager : MonoBehaviour
     {
         [Header("Configuration")]
         [SerializeField, Range(1, 10)] private int roundDurationSeconds = 5;
@@ -23,11 +23,11 @@ namespace GameScene.Managers
         [SerializeField] private PopupEventChannel popupEventChannel;
         [SerializeField] private HandsUIHandler handsUIHandler;
 
-        public event Action<int, float> OnTimerTick;
-        public event Action<int> OnScoreUpdated;
-        public event Action OnRoundStarted;
-        public event Action OnRoundEnded;
-        public event Func<HandType?> GetComputerHandType;
+        internal event Action<int, float> OnTimerTick;
+        internal event Action<int> OnScoreUpdated;
+        internal event Action OnRoundStarted;
+        internal event Action OnRoundEnded;
+        internal event Func<HandType?> GetComputerHandType;
 
         private int _currentSessionScore;
 

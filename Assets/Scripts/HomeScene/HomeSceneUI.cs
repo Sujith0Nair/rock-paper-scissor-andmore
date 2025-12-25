@@ -10,7 +10,7 @@ using Bootstrap.ScriptableObjects;
 
 namespace HomeScene
 {
-    public class HomeSceneUI : MonoBehaviour
+    internal class HomeSceneUI : MonoBehaviour
     {
         [SerializeField] private Button playButton;
         [SerializeField] private Button howToPlayButton;

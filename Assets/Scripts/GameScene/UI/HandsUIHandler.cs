@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace GameScene.UI
 {
-    public class HandsUIHandler : MonoBehaviour
+    internal class HandsUIHandler : MonoBehaviour
     {
         [SerializeField] private GameObject referenceHandUI;
         [SerializeField] private Transform handsParent;
@@ -16,7 +16,7 @@ namespace GameScene.UI
         [SerializeField] private Image selectionImage;
         [SerializeField] private Sprite defaultSprite;
         
-        public HandType? CurrentHand { get; private set; }
+        internal HandType? CurrentHand { get; private set; }
 
         private void Start()
         {
@@ -32,7 +32,7 @@ namespace GameScene.UI
             ResetSelection();
         }
 
-        public void Initialize(IReadOnlyList<HandUIData> handsData)
+        internal void Initialize(IReadOnlyList<HandUIData> handsData)
         {
             Cleanup();
 
@@ -48,7 +48,7 @@ namespace GameScene.UI
             }
         }
 
-        public void ResetSelection()
+        internal void ResetSelection()
         {
             CurrentHand = null;
             if (currentMessage != null) currentMessage.text = string.Empty;

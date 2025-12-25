@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace GameScene.UI
 {
-    public class GameTimerUI : MonoBehaviour
+    internal class GameTimerUI : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private GameRoundManager gameRoundManager;

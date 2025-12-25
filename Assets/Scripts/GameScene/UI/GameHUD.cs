@@ -9,7 +9,7 @@ using Core.ScriptableObjects.Holders;
 
 namespace GameScene.UI
 {
-    public class GameHUD : MonoBehaviour
+    internal class GameHUD : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private GameRoundManager gameRoundManager;
