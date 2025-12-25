@@ -1,8 +1,12 @@
 {
-    "name": "RPS.Bootstrap",
+    "name": "ProceduralUIImage.Editor",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:99be85010996f45cc8498e269672c357"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -1,7 +1,7 @@
-using UnityEngine;
-using TMPro;
-using GameScene.Managers;
 using Core;
+using TMPro;
+using UnityEngine;
+using GameScene.Managers;
 using Core.ScriptableObjects.Holders;
 
 namespace GameScene.UI
@@ -23,28 +23,22 @@ namespace GameScene.UI
             {
                 handsUIHandler.Initialize(handsHolder.GetAllHandsData());
             }
-
             UpdateScoreUI(ScoreManager.GetScore());
-            
-            if (messageText != null) messageText.text = "";
+            ShowMessage("");
         }
 
         private void OnEnable()
         {
-            if (gameRoundManager != null)
-            {
-                gameRoundManager.OnScoreUpdated += UpdateScoreUI;
-                gameRoundManager.OnGameMessage += ShowMessage;
-            }
+            if (gameRoundManager == null) return;
+            gameRoundManager.OnScoreUpdated += UpdateScoreUI;
+            gameRoundManager.OnGameMessage += ShowMessage;
         }
 
         private void OnDisable()
         {
-            if (gameRoundManager != null)
-            {
-                gameRoundManager.OnScoreUpdated -= UpdateScoreUI;
-                gameRoundManager.OnGameMessage -= ShowMessage;
-            }
+            if (gameRoundManager == null) return;
+            gameRoundManager.OnScoreUpdated -= UpdateScoreUI;
+            gameRoundManager.OnGameMessage -= ShowMessage;
         }
 
         private void UpdateScoreUI(int newScore)

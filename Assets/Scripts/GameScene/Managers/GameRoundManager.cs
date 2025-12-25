@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using GameScene.UI;
 using GameScene.Utilities;
+using Core.Enums;
+using Core.ScriptableObjects;
 using Bootstrap.ScriptableObjects;
 using Core.ScriptableObjects.Hands;
 using Core.ScriptableObjects.Holders;
@@ -17,15 +19,21 @@ namespace GameScene.Managers
         [Header("Dependencies")]
         [SerializeField] private HandsHolder handsHolder;
         [SerializeField] private GameEventChannel gameEventChannel;
+        [SerializeField] private PopupEventChannel popupEventChannel;
         [SerializeField] private HandsUIHandler handsUIHandler;
 
         public event Action<int, float> OnTimerTick;
         public event Action<int> OnScoreUpdated;
         public event Action<string> OnGameMessage;
 
-        private void Start() => StartNewRound();
+        private void Start() => ShowTutorial();
 
         private void OnDestroy() => Timer.StopCountdown();
+
+        private void ShowTutorial()
+        {
+            popupEventChannel.RaisePopup(PopupType.Tutorial, StartNewRound);
+        }
 
         private void StartNewRound()
         {
@@ -45,7 +53,8 @@ namespace GameScene.Managers
         {
             if (handsUIHandler.CurrentHand == null)
             {
-                HandleLoss("Time's Up!");
+                // Treat time out as a loss or handle separately if needed
+                popupEventChannel.RaisePopup(PopupType.ComputerWon, () => TriggerSceneChange());
                 return;
             }
 
@@ -54,7 +63,12 @@ namespace GameScene.Managers
 
             if (HasPlayerWon(playerHand, computerHand, out var message))
             {
-                HandleWin(message);
+                // Update score immediately or after popup? Usually implies the win happened, so update score now.
+                var newScore = ScoreManager.GetScore() + 1;
+                ScoreManager.SetScore(newScore);
+                OnScoreUpdated?.Invoke(newScore);
+
+                popupEventChannel.RaisePopup(PopupType.PlayerWon, StartNewRound);
             }
             else
             {
@@ -65,26 +79,9 @@ namespace GameScene.Managers
                 }
                 else
                 {
-                    HandleLoss(message);
+                    popupEventChannel.RaisePopup(PopupType.ComputerWon, () => TriggerSceneChange());
                 }
             }
-        }
-
-        private void HandleWin(string message)
-        {
-            var newScore = ScoreManager.GetScore() + 1;
-            ScoreManager.SetScore(newScore);
-            
-            OnScoreUpdated?.Invoke(newScore);
-            OnGameMessage?.Invoke(message);
-
-            Invoke(nameof(StartNewRound), 2f);
-        }
-
-        private void HandleLoss(string message)
-        {
-            OnGameMessage?.Invoke(message);
-            Invoke(nameof(TriggerSceneChange), 2f);
         }
 
         private void TriggerSceneChange()
